@@ -78,6 +78,7 @@ PTSalesman::PTSalesman(const char* name,  float Sale)
 	calLevel(getSalary());
 	employees[maxNum] = this;
 	maxNum++;
+	setNum(maxNum);
 }
 PTSalesman::PTSalesman()
 {
@@ -88,14 +89,14 @@ PTSalesman::~PTSalesman()
 {
 	maxNum--;
 }
-float PTTechnician :: getSalary()
-{
-	setSalary(WorkHour * 100.0);
-	return getSalary();
-}
 
 
 //PTTechnician methods implemetation
+float PTTechnician :: getSalary()
+{
+	setSalary(WorkHour * 100.0);
+	return WorkHour * 100.0;
+}
 PTTechnician::PTTechnician(const char* name, int level, int WorkHour)
 {
 	this->WorkHour = WorkHour;
@@ -104,6 +105,7 @@ PTTechnician::PTTechnician(const char* name, int level, int WorkHour)
 	calLevel(getSalary());
 	employees[maxNum] = this;
 	maxNum++;
+	setNum(maxNum);
 }
 PTTechnician::~PTTechnician()
 {
@@ -115,34 +117,34 @@ PTTechnician::~PTTechnician()
 int SaleManager::num = 0;
 float SaleManager::getSalary()
 {
-	double s = 0;
-	for (int i = 0; i <salesmen.getsize(); ++i)
+	float s = 0;
+	for (int i = 0; i <num; ++i)
 	{
 		s = s + salesmen[i].getSale();
 	}
 	departmentSale = s;
 	return fixedSal + 0.05*s;
 }
-SaleManager::SaleManager(const char* name, float fixedSalary, int sz = 0):salesmen(sz)
+SaleManager::SaleManager(const char* name, float fixedSalary, int sz = 50):salesmen(sz)
 {
 	setName(name);
 	fixedSal = fixedSalary;
-	setSalary(fixedSalary + getSalary());
+	setSalary(getSalary());
 }
 SaleManager::~SaleManager()
 {
 	maxNum--;
 }
-void SaleManager::addSalesmen(PTSalesman* s)
+void SaleManager::addSalesmen(PTSalesman& s)
 {
-	salesmen[num] = *s;
+	salesmen[num] = s;
 	num++;
 }
-void SaleManager::deleteSalesmen(PTSalesman* s)
+void SaleManager::deleteSalesmen(PTSalesman& s)
 {
 	for (int i = 0; i < num; i++)
 	{
-		if (salesmen[i].getNum() == s->getNum())
+		if (salesmen[i].getNum() == s.getNum())
 		{
 			for (int j = i; j < num-1; j++)
 			{
@@ -152,6 +154,11 @@ void SaleManager::deleteSalesmen(PTSalesman* s)
 			return;
 		}
 	}
+}
+
+int SaleManager::getSalesmenNum()
+{
+	return num;
 }
 
 //Manager methods implementation
@@ -187,11 +194,16 @@ PTSalesman& Array::operator[](int i)
 }
 int main()
 {
-	PTSalesman a("x", 30000);
-	PTSalesman b("y", 3000);
-	PTSalesman c("z", 430000);
-	SaleManager x("j", 30000, 4);
-	x.addSalesmen(&a);
-	x.addSalesmen(&b);
+	PTSalesman a("o", 30000);
+	PTSalesman b("u", 3000);
+	PTSalesman c("x", 43000);
+	SaleManager x("y", 30000, 4);
+	x.addSalesmen(a);
+	x.addSalesmen(b);
+	cout << a.getSalary() << " " << a.getNum() << endl;
+	cout << b.getSalary() << " " << b.getNum() << endl;
+	cout << x.getSalary() << " " << x.getSalesmenNum() << endl;
+	x.deleteSalesmen(a);
 	cout << x.getSalary() << endl;
+	system("pause");
 }
