@@ -31,21 +31,6 @@ public:
 	float getSalary();
 };
 
-class SaleManager : public employee
-{
-private:
-	float fixedSal;
-	float departmentSale;
-	static int num;
-public:	
-	Array salesmen;
-	SaleManager(const char*, float, int);
-	~SaleManager();
-	float getSalary();
-	void addSalesmen(PTSalesman*);
-	void deleteSalesmen(PTSalesman*);
-};
-
 class PTSalesman : public employee
 {
 private:
@@ -58,13 +43,6 @@ public:
 	float getSale();
 };
 
-class Manager : public employee
-{
-public:
-	Manager();
-	~Manager();
-};
-
 class Array
 {
 private:
@@ -75,4 +53,27 @@ public:
 	~Array();
 	int getsize();
 	PTSalesman&  operator[](int);
+};
+
+class SaleManager : public employee
+{
+private:
+	float fixedSal;
+	float departmentSale;
+	static int num;
+public:	
+	Array salesmen;
+	SaleManager(const char*, float, int);
+	~SaleManager();
+	float getSalary();
+	void addSalesmen(PTSalesman&);
+	void deleteSalesmen(PTSalesman&);
+	int getSalesmenNum();
+};
+
+class Manager : public employee
+{
+public:
+	Manager();
+	~Manager();
 };
